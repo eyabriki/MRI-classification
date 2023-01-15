@@ -7,11 +7,11 @@ This is a project that allows users to upload MRI images, classify them as healt
 
 The application runs on http://localhost:5000/. 
 
-The following endpoints for user login is available:
+<u>The following endpoints for user login is available:<u>
 
 POST /login: Logs in the user and returns an access token
 
-The following endpoints for MRI dataset management are available:
+<u>The following endpoints for MRI dataset management are available:<u>
 
 POST /MRI: Uploads an MRI image and classifies it as healthy or containing a tumor (protected endpoint)
 
@@ -21,7 +21,7 @@ PUT /MRI/<string:id>: Updates the information of an MRI image by its ID (protect
 
 DELETE /MRI/<string:id>: Deletes an MRI image by its ID (protected endpoint)
 
-The following endpoints for users dataset management are available:
+<u>The following endpoints for users dataset management are available:<u>
 
 
 POST /users: Adds a new user to the users dataframe. (protected endpoint)
