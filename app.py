@@ -7,9 +7,10 @@ import matplotlib.pyplot as plt
 import os
 import random
 import uuid
-#import CNN
+import tensorflow as tf 
 import bcrypt
 import postgres_tables
+import crop_image
 from flask import Flask, make_response, request
 from flask_restful import Api, Resource, reqparse
 from flask_smorest import abort
@@ -90,6 +91,69 @@ def get_MRI_by_id(id):
     response.headers.set('Content-Type', 'image/jpeg')
     
     return (response, result)
+
+@app.post('/MRI') 
+@jwt_required()
+def add_MRI () :
+    claims = get_jwt_identity()
+    role = claims.get('role')
+    if role not in ['admin', 'moderator']:
+        return {"message": "You are not authorized to perform this action."}, 403
+    
+    # Read the values of the other columns from the request payload
+    payload = request.get_json()
+    gender = payload.get('gender')
+    hospital= payload.get('hospital')
+    
+    loaded_model = tf.keras.models.load_model(r'C:\Users\dell\Documents\projet_ws\model.h5')
+    data=postgres_tables.get_data_dataframe()
+
+    image_list = glob.glob(r'C:\Users\dell\Documents\projet_ws\new/*.jpg')
+
+    #Sort the list based on the modification time of the files
+    image_list.sort(key=lambda x: os.path.getmtime(x))
+
+    #Get the last image in the list (the one with the latest modification time)
+    last_image = image_list[-1]
+
+# Read the image
+    image = cv2.imread(last_image)
+
+   
+    # Resize the image
+    image = cv2.resize(image, (128, 128))
+    
+    # Check if the image was read successfully
+    if image is None:
+        return {'message': 'MRI not found'}, 400
+    x=[]
+
+    new_img=crop_image.crop_image(image)
+    x.append(new_img)
+    
+    resized_imgs = [cv2.resize(img, dsize=(32, 32)) for img in x]
+    x=np.squeeze(resized_imgs)
+    X = x.astype('float32')
+    X /= 255
+    X = np.expand_dims(x, axis=0)
+
+
+    # Predict the class of the image
+    y_hat = loaded_model.predict(X)
+    if y_hat == 0:
+        label = 'healthy'
+    else:
+        label = 'tumor'
+
+    # Create a new row for the image in the DataFrame
+    new_row = {'id': uuid.uuid4(), 'MRI': image, 'gender': gender, 'hospital':hospital, 'class': label }
+    
+    
+    
+    data = data.append(new_row, ignore_index=True).reset_index(drop=True)
+    postgres_tables.apload_data(data)
+
+    return {'message':'MRI added'}, 200
 
 
 @app.route('/MRI/<string:id>', methods=['PUT', 'PATCH'])
