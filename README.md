@@ -11,7 +11,7 @@ The application runs on http://localhost:5000/.
 
 POST /login: Logs in the user and returns an access token
 
-<u>The following endpoints for MRI dataset management are available:<u>
+<ins>The following endpoints for MRI dataset management are available:</ins>
 
 POST /MRI: Uploads an MRI image and classifies it as healthy or containing a tumor (protected endpoint)
 
@@ -21,7 +21,7 @@ PUT /MRI/<string:id>: Updates the information of an MRI image by its ID (protect
 
 DELETE /MRI/<string:id>: Deletes an MRI image by its ID (protected endpoint)
 
-<u>The following endpoints for users dataset management are available:<u>
+<ins>The following endpoints for users dataset management are available:</ins>
 
 
 POST /users: Adds a new user to the users dataframe. (protected endpoint)
@@ -45,7 +45,7 @@ The application uses JSON Web Tokens (JWT) for authentication and authorization.
 The application uses the Flask-RESTful library for creating the RESTful API and Flask-JWT-Extended library for handling JWT.
 
 **Conclusion**
-This project provides a simple way to classify MRI images and manage them using a RESTful API. The limitations and possible solutions are highlighted in the limitations section. The usage of the endpoints is provided in the usage section and the technical details of the project are provided in the additional information section .
+This project provides a simple way to classify MRI images and manage them using a RESTful API. . The usage of the endpoints is provided in the usage section and the technical details of the project are provided in the additional information section .
 
 
 
