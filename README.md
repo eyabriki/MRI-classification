@@ -7,7 +7,7 @@ This is a project that allows users to upload MRI images, classify them as healt
 
 The application runs on http://localhost:5000/. 
 
-<u>The following endpoints for user login is available:</u>
+<ins>The following endpoints for user login is available:</ins>
 
 POST /login: Logs in the user and returns an access token
 
