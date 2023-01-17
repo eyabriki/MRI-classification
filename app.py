@@ -219,7 +219,6 @@ def get_doctor(name):
     'id':users['user_id'][row],
     'name': users['user_name'][row],
     'email': users['user_email'][row],
-    'password':users['user_password'][row],
     'hospital': users['user_hospital'][row],
     'role':users['user_role'][row]
 }
@@ -234,7 +233,7 @@ def add_doctor():
     claims = get_jwt_identity()
     role = claims.get('role')
     if role not in ['admin', 'moderator']:
-        return {"message": "You are not authorized to perform this action."}, 403
+       return {"message": "You are not authorized to perform this action."}, 403
     
     payload=request.get_json()
     name=payload.get('user_name')

@@ -20,6 +20,7 @@ hospitals=[random.choice(work) for i in range(5)]
 #passwords
 passwords=[''.join(random.sample(string.ascii_letters+ string.digits+ string.punctuation,8)) for i in range(5)]
 crypted=[]
+
 for i in passwords:
     encoded=i.encode('utf-8')
     mysalt=bcrypt.gensalt()
@@ -41,6 +42,11 @@ for ind in range(1,3):
     users['user_role'][ind]='moderator'
 for ind in range(3,5):
     users['user_role'][ind]='viewer'
+
+eya_password='12345'
+eya_password=eya_password.encode('utf-8')
+eya_password==bcrypt.hashpw(encoded, mysalt)
+
 
 
 #connecting to postgres
